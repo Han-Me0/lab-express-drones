@@ -20,7 +20,7 @@ editButton.addEventListener("click", async (event) => {
   event.preventDefault();
   const editForm = document.getElementById("drone-edit-button");
   editForm.classList.toggle("hidden");
-  const details = document.getElementById("bookDetails");
+  const details = document.getElementById("droneDetails");
   details.classList.toggle("hidden");
   editButton.classList.toggle("hidden");
   console.log("Edit button was clicked");

@@ -8,11 +8,12 @@ const modelDrone = require("../models/Drone.model");
 router.get('/drones', async (req, res, next) => {
   // Iteration #2: List the drones
   // ... your code here
+
   
   try{
     const droneFromDb = await modelDrone.find();
 
-    res.render("drones/list.hbs", {droneFromDb})
+    res.render("drones/list.ejs", {droneFromDb})
   }
   catch(err){
    console.log("Error!",err)
@@ -23,7 +24,7 @@ router.get('/drones', async (req, res, next) => {
 router.get('/drones/create', (req, res, next) => {
   // Iteration #3: Add a new drone
   // ... your code here
-  res.render("drones/create-form.hbs")
+  res.render("drones/create-form.ejs")
 });
 
 router.post('/drones/create', async (req, res, next) => {
@@ -39,34 +40,38 @@ router.post('/drones/create', async (req, res, next) => {
   res.redirect("/drones");
 });
 
-// router.get('/drones/:id/edit', async (req, res, next) => {
-//   // Iteration #4: Update the drone
-//   // ... your code here
+router.get('/drones/:id/edit', async (req, res, next) => {
+  // Iteration #4: Update the drone
+  // ... your code here
   
-// // const droneId = mongoose.Types.ObjectId(req.params.id);
-//   const droneDetails = await modelDrone.findById(req.params.id);
-//   console.log(droneDetails);
-//   res.render("drones/update-form.hbs", {droneDetails});
-// });
+  const droneDetails = await modelDrone.findById(req.params.id);
+  console.log(droneDetails);
+  res.render("drones/update-form", {droneDetails});
+});
 
-// router.post('/drones/:id/edit', async (req, res, next) => {
-//   // Iteration #4: Update the drone
-//   // ... your code here
-//   const droneId = mongoose.Types.ObjectId(req.params.id);
-//   await modelDrone.findByIdAndUpdate(droneId, { ...req.body });
-//   res.redirect("/drones/" + droneId);
-// });
+router.post('/drones/:id/edit', async (req, res, next) => {
+  // Iteration #4: Update the drone
+  // ... your code here
+  const droneId = req.params.id;
+  const updated = req.body;
+  await modelDrone.findByIdAndUpdate(droneId, updated);
 
+  //Model.findByIdAndUpdate(req.params.Id, req.body, { new: true });
+
+  res.redirect("/drones");
+});
 router.post('/drones/:id/delete', (req, res, next) => {
   // Iteration #5: Delete the drone
   // ... your code here
-  router.delete("/drones/:id/delete", async (req, res) => {
-    const droneId = mongoose.Types.ObjectId(req.params.id);
+   //router.delete("/drones/:id/delete", async (req, res) => {
+    const droneId = req.params.id;
     console.log("droneId to delete", droneId);
   
     await modelDrone.findByIdAndDelete(droneId);
-    res.send("Successfully deleted");
+    res.redirect("/drones")
+    // res.send("Successfully deleted");
   });
-});
+//});
+
 
 module.exports = router;

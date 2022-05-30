@@ -12,14 +12,14 @@ const drones = [
 
   async function main(){
       try{
-          await Drone.create();
+          await Drone.create(drones);
           console.log('Drones were seeded!')
       }
       catch(err){
         console.log('Error!',err)
       }
       finally{
-          mongoose.connection.close;
+          mongoose.connection.close();
       }
   }
 
